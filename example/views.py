@@ -38,6 +38,7 @@ def index(request):
         res["headers"]=dict(req.headers)
         res["status"]=req.status_code
         rsp=HttpResponse(json.dumps(res),content_type="application/json")
+        rsp["Access-Control-Allow-Origin"] = "*"  # Allow any origin to access this resource
         return rsp
     except BaseException as e:
         return HttpResponse(f"Internal error! Error message: {e}",status=500)
