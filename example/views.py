@@ -22,13 +22,18 @@ def index(request):
             "headers": dict,
             "body": (str)
         }
-        for key, expected_type in required_keys.items():
-            if key not in data:
+        jsn=json.parse(request.body.decode('utf-8'))
+        for key, expected_type in templ.items():
+            if key not in jsn:
                 raise ValueError(f"Missing required key: {key}")
             if not isinstance(data[key], expected_type):
                 raise TypeError(f"Invalid type for {key}: Expected {expected_type}, got {type(data[key])}")
         res["success"]=True
-        req=httpx.get("https://google.com")
+        req=0
+        if jsn["method"] in ["POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"]:
+            req=httpx.request(jsn["method"],"https://google.com",data=jsn["body"])
+        else:
+            req=httpx.request(jsn["method"],"https://google.com")
         res["body"]=base64.b64encode(req.content).decode('utf-8')
         res["headers"]=dict(req.headers)
         res["status"]=req.status_code
