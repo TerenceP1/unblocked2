@@ -20,8 +20,8 @@ def index(request):
         req=httpx.get("https://google.com")
         res["body"]=base64.b64encode(req.content).decode('utf-8')
         res["headers"]=req.headers
-        req["status"]=req.status_code
-        rsp=HttpResponse(json.dumps(res))
+        res["status"]=req.status_code
+        rsp=HttpResponse(json.dumps(res),headers={"content_type":"application/json"})
         return rsp
     except BaseException as e:
-        return HttpResponse(f"Internal error! Error message:{e}")
+        return HttpResponse(f"Internal error! Error message:{e}",status=status.HTTP_500_INTERNAL_SERVER_ERROR)
