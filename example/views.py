@@ -6,7 +6,9 @@ from django.http import HttpResponse
 import json
 
 import httpx
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def index(request):
     try:
         now = datetime.now()
