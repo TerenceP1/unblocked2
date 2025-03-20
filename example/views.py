@@ -6,7 +6,7 @@ from django.http import HttpResponse
 import json
 
 import httpx
-
+@csrf_exempt
 def index(request):
     now = datetime.now()
     if request.method!="POST":
