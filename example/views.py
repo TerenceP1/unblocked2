@@ -19,9 +19,9 @@ def index(request):
         res["success"]=True
         req=httpx.get("https://google.com")
         res["body"]=base64.b64encode(req.content).decode('utf-8')
-        res["headers"]=req.headers
+        res["headers"]=dict(req.headers)
         res["status"]=req.status_code
-        rsp=HttpResponse(json.dumps(res),headers={"content_type":"application/json"})
+        rsp=HttpResponse(json.dumps(res),content_type="application/json")
         return rsp
     except BaseException as e:
-        return HttpResponse(f"Internal error! Error message:{e}",status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return HttpResponse(f"Internal error! Error message:{e}",status=500)
