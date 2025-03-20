@@ -18,7 +18,7 @@ def index(request):
         res={}
         res["success"]=True
         req=httpx.get("https://google.com")
-        res["body"]=base64.b64encode(req.content)
+        res["body"]=base64.b64encode(req.content).decode('utf-8')
         rsp=HttpResponse(json.dumps(res))
         return rsp
     except BaseException as e:
