@@ -22,7 +22,7 @@ def index(request):
             "headers": dict,
             "body": (str)
         }
-        jsn=json.parse(request.body.decode('utf-8'))
+        jsn=json.loads(request.body.decode('utf-8'))
         for key, expected_type in templ.items():
             if key not in jsn:
                 raise ValueError(f"Missing required key: {key}")
