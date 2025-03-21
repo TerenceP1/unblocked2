@@ -14,7 +14,9 @@ def index(request):
     try:
         now = datetime.now()
         if request.method!="POST":
-            return HttpResponse("Sorry, only POST is supported. If you are a regular user looking at this page, no worries! Just close this page and continue on!")
+            r=HttpResponse(f"Sorry, only POST is supported. If you are a regular user looking at this page, no worries! Just close this page and continue on!",status=500)
+            r["Access-Control-Allow-Origin"] = "*"
+            return r
         res={}
         templ={
             "url": str,
@@ -43,4 +45,6 @@ def index(request):
         rsp["Access-Control-Allow-Headers"] = "*"  # Allow specific headers
         return rsp
     except BaseException as e:
-        return HttpResponse(f"Internal error! Error message: {e}",status=500)
+        r=HttpResponse(f"Internal error! Error message: {e}",status=500)
+        r["Access-Control-Allow-Origin"] = "*"
+        return r
