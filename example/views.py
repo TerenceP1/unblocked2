@@ -41,9 +41,9 @@ def index(request):
         #res["status"]=req.status_code
         rsp=0
         if "content-type" in req.headers:
-            rsp=HttpResponse(req.content,content_type=req.headers["content-type"])
+            rsp=HttpResponse(bytes("<h1>https://"+request.path[1:]+"</h1>",encoding="utf-8")+req.content,content_type=req.headers["content-type"])
         else:
-            rsp=HttpResponse(req.content)
+            rsp=HttpResponse(bytes("<h1>https://"+request.path[1:]+"</h1>",encoding="utf-8")+req.content)
         rsp["Access-Control-Allow-Origin"] = "*"  # Allow any origin to access this resource
         rsp["Access-Control-Allow-Methods"] = "*"  # Allow specific methods
         rsp["Access-Control-Allow-Headers"] = "*"  # Allow specific headers
