@@ -39,7 +39,7 @@ def index(request):
         #res["body"]=base64.b64encode(req.content).decode('utf-8')
         #res["headers"]=dict(req.headers)
         #res["status"]=req.status_code
-        rsp=HttpResponse(req.content,content_type=request.headers["content-type"])
+        rsp=HttpResponse(req.content,content_type=req.headers["content-type"])
         rsp["Access-Control-Allow-Origin"] = "*"  # Allow any origin to access this resource
         rsp["Access-Control-Allow-Methods"] = "*"  # Allow specific methods
         rsp["Access-Control-Allow-Headers"] = "*"  # Allow specific headers
