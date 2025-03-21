@@ -33,7 +33,7 @@ def index(request):
         #res["success"]=True
         req=0
         if request.method in ["POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"]:
-            req=httpx.request(request.method,"https://"+request.path[1:],headers=dict(request.headers),data=request.body)
+            req=httpx.request(request.method,"https://"+request.path[1:],headers=dict(request.headers),data=request.body.decode())
         else:
             req=httpx.request(request.method,"https://"+request.path[1:],headers=dict(request.headers))
         #res["body"]=base64.b64encode(req.content).decode('utf-8')
@@ -41,9 +41,9 @@ def index(request):
         #res["status"]=req.status_code
         rsp=0
         if "content-type" in req.headers:
-            rsp=HttpResponse(bytes("<h1>https://"+request.path[1:]+"</h1>",encoding="utf-8")+req.content,content_type=req.headers["content-type"])
+            rsp=HttpResponse(bytes(str(dict(request.headers)),encoding="utf-8")+bytes("<h1>https://"+request.path[1:]+"</h1>",encoding="utf-8")+req.content,content_type=req.headers["content-type"])
         else:
-            rsp=HttpResponse(bytes("<h1>https://"+request.path[1:]+"</h1>",encoding="utf-8")+req.content)
+            rsp=HttpResponse(bytes(str(dict(request.headers)),encoding="utf-8")+bytes("<h1>https://"+request.path[1:]+"</h1>",encoding="utf-8")+req.content)
         rsp["Access-Control-Allow-Origin"] = "*"  # Allow any origin to access this resource
         rsp["Access-Control-Allow-Methods"] = "*"  # Allow specific methods
         rsp["Access-Control-Allow-Headers"] = "*"  # Allow specific headers
