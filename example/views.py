@@ -13,10 +13,10 @@ from django.views.decorators.csrf import csrf_exempt
 def index(request):
     try:
         now = datetime.now()
-        if request.method!="POST":
-            r=HttpResponse(f"Sorry, only POST is supported. If you are a regular user looking at this page, no worries! Just close this page and continue on!",status=500)
-            r["Access-Control-Allow-Origin"] = "*"
-            return r
+        #if request.method!="POST":
+        #    r=HttpResponse(f"Sorry, only POST is supported. If you are a regular user looking at this page, no worries! Just close this page and continue on!",status=500)
+        #    r["Access-Control-Allow-Origin"] = "*"
+        #    return r
         res={}
         templ={
             "url": str,
@@ -24,22 +24,22 @@ def index(request):
             "headers": dict,
             "body": (str)
         }
-        jsn=json.loads(request.body.decode('utf-8'))
-        for key, expected_type in templ.items():
-            if key not in jsn:
-                raise ValueError(f"Missing required key: {key}")
-            if not isinstance(jsn[key], expected_type):
-                raise TypeError(f"Invalid type for {key}: Expected {expected_type}, got {type(jsn[key])}")
-        res["success"]=True
+        #jsn=json.loads(request.body.decode('utf-8'))
+        #for key, expected_type in templ.items():
+        #    if key not in jsn:
+        #        raise ValueError(f"Missing required key: {key}")
+        #    if not isinstance(jsn[key], expected_type):
+        #        raise TypeError(f"Invalid type for {key}: Expected {expected_type}, got {type(jsn[key])}")
+        #res["success"]=True
         req=0
-        if jsn["method"] in ["POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"]:
-            req=httpx.request(jsn["method"],jsn["url"],headers=jsn["headers"],data=jsn["body"])
+        if request.method in ["POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"]:
+            req=httpx.request(request.method,request.path[1:],headers=dict(request.headers),data=request.body)
         else:
-            req=httpx.request(jsn["method"],jsn["url"],headers=jsn["headers"])
-        res["body"]=base64.b64encode(req.content).decode('utf-8')
-        res["headers"]=dict(req.headers)
-        res["status"]=req.status_code
-        rsp=HttpResponse(json.dumps(res),content_type="application/json")
+            req=httpx.request(request.method,request.path[1:],headers=dict(request.headers))
+        #res["body"]=base64.b64encode(req.content).decode('utf-8')
+        #res["headers"]=dict(req.headers)
+        #res["status"]=req.status_code
+        rsp=HttpResponse(res.content,content_type=request.headers["content-type"])
         rsp["Access-Control-Allow-Origin"] = "*"  # Allow any origin to access this resource
         rsp["Access-Control-Allow-Methods"] = "*"  # Allow specific methods
         rsp["Access-Control-Allow-Headers"] = "*"  # Allow specific headers
