@@ -33,9 +33,9 @@ def index(request):
         #res["success"]=True
         req=0
         if request.method in ["POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"]:
-            req=httpx.request(request.method,"https://"+request.path[1:],headers=dict(request.headers),data=request.body.decode())
+            req=httpx.request(request.method,"https://"+request.path[1:],headers=dict(request.headers)|{"Accept-Encoding":"identity"},data=request.body.decode())
         else:
-            req=httpx.request(request.method,"https://"+request.path[1:],headers=dict(request.headers))
+            req=httpx.request(request.method,"https://"+request.path[1:],headers=dict(request.headers)|{"Accept-Encoding":"identity"})
         #res["body"]=base64.b64encode(req.content).decode('utf-8')
         #res["headers"]=dict(req.headers)
         #res["status"]=req.status_code
