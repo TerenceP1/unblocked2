@@ -32,10 +32,15 @@ def index(request):
         #        raise TypeError(f"Invalid type for {key}: Expected {expected_type}, got {type(jsn[key])}")
         #res["success"]=True
         req=0
+        headers={}
+        for i in dict(request).keys():
+            if not (i.lower().startswith("x-vercel") or i.lower().startswith("x-forwarded")):
+                headers[i.lower()]=request[i]
+        headers["accept-encoding"]="identity"
         if request.method in ["POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"]:
-            req=httpx.request(request.method,"https://"+request.path[1:],headers=dict(request.headers)|{"Accept-Encoding":"identity"},data=request.body.decode())
+            req=httpx.request(request.method,"https://"+request.path[1:],headers=headers,data=request.body.decode())
         else:
-            req=httpx.request(request.method,"https://"+request.path[1:],headers=dict(request.headers)|{"Accept-Encoding":"identity"})
+            req=httpx.request(request.method,"https://"+request.path[1:],headers=headers)
         #res["body"]=base64.b64encode(req.content).decode('utf-8')
         #res["headers"]=dict(req.headers)
         #res["status"]=req.status_code
