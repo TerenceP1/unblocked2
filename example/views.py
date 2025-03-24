@@ -35,7 +35,7 @@ def index(request):
         headers={}
         for i in dict(request.headers).keys():
             if not (i.lower().startswith("x-vercel") or i.lower().startswith("x-forwarded")):
-                headers[i.lower()]=request[i]
+                headers[i.lower()]=request.headers[i]
         headers["accept-encoding"]="identity"
         if request.method in ["POST", "PUT", "PATCH", "DELETE", "OPTIONS", "TRACE"]:
             req=httpx.request(request.method,"https://"+request.path[1:],headers=headers,data=request.body.decode())
