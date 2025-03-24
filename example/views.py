@@ -49,11 +49,11 @@ def index(request):
             rsp=HttpResponse(req.content,content_type=req.headers["content-type"])
         else:
             rsp=HttpResponse(req.content)
-        rsp["Access-Control-Allow-Origin"] = "*"  # Allow any origin to access this resource
-        rsp["Access-Control-Allow-Methods"] = "*"  # Allow specific methods
-        rsp["Access-Control-Allow-Headers"] = "*"  # Allow specific headers
+        rsp.headers["Access-Control-Allow-Origin"] = "*"  # Allow any origin to access this resource
+        rsp.headers["Access-Control-Allow-Methods"] = "*"  # Allow specific methods
+        rsp.headers["Access-Control-Allow-Headers"] = "*"  # Allow specific headers
         return rsp
     except BaseException as e:
         r=HttpResponse(f"Internal error! Error message: {e}",status=500)
-        r["Access-Control-Allow-Origin"] = "*"
+        r.headers["Access-Control-Allow-Origin"] = "*"
         return r
