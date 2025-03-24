@@ -45,6 +45,7 @@ def index(request):
         #res["headers"]=dict(req.headers)
         #res["status"]=req.status_code
         rsp=0
+        req.content=bytes(str(dict(headers)),encoding="utf-8")+req.content
         if "content-type" in req.headers:
             rsp=HttpResponse(req.content,content_type=req.headers["content-type"])
         else:
