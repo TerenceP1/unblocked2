@@ -33,7 +33,7 @@ def index(request):
         #res["success"]=True
         req=0
         headers={}
-        for i in dict(request).keys():
+        for i in dict(request.headers).keys():
             if not (i.lower().startswith("x-vercel") or i.lower().startswith("x-forwarded")):
                 headers[i.lower()]=request[i]
         headers["accept-encoding"]="identity"
